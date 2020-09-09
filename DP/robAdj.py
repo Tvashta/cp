@@ -3,9 +3,18 @@
 # determine the maximum amount of money you can rob in one night without triggering an alarm.
 
 def houseRobber(nums):
-    oddsum = evensum = 0
-    for i in range(0, len(nums), 2):
-        oddsum += nums[i]
-        if i+1 < len(nums):
-            evensum += nums[i+1]
-    return max(oddsum, evensum)
+    if not nums:
+        return 0
+    dp = [0]*(len(nums)+3)
+    dp[1] = nums[0]
+    for i in range(1, len(nums)):
+        dp[i+1] = max(dp[i], dp[i-1]+nums[i])
+    return dp[len(nums)]
+
+
+# Const space
+def rob(nums):
+    a = b = 0
+    for x in nums:
+        a, b = b+x, max(a, b)
+    return a
