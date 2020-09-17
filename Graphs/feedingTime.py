@@ -30,3 +30,30 @@
 # Basically consider all the classes that have common animals as adjacent ones.
 # Since they can't be visited in the same day. Now day becomes colors and
 # Our problem can be solved with Backtracking
+
+def feedingTime(classes):
+    adj = [[] for _ in range(len(classes))]
+    for i, class1 in enumerate(classes):
+        for j, class2 in enumerate(classes):
+            if i != j:
+                if set(class1) & set(class2):
+                    adj[i].append(j)
+    colors = [0]*len(adj)
+
+    def isSafe(i, c):
+        for j in adj[i]:
+            if colors[j] == c:
+                return False
+        return True
+
+    def coloring(i):
+        if i == len(adj):
+            return max(colors)
+        for j in range(1, 6):
+            if isSafe(i, j):
+                colors[i] = j
+                if coloring(i+1) != -1:
+                    return coloring(i+1)
+                colors[i] = 0
+        return -1
+    return coloring(0)

@@ -16,7 +16,14 @@ def cons(a, b):
 # d=cons(a,b)
 # d(print)
 # a,b will be printed on the screen
-d = cons(1, 2)
-print(d)
-d(print)
-print(d(print))
+
+def car(pair):
+    def left(a, b):
+        return a
+    return pair(left)
+
+
+def cdr(pair):
+    def right(a, b):
+        return b
+    return pair(right)
