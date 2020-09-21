@@ -7,5 +7,29 @@
 
 # Given the number of people in you company n and the respectList you created,
 # calculate the number of different hierarchies you can create.
+
+# Basically count number of spanning trees
+# Kirchoff's algorithm:
+# Subtract adj matrix from degree matrix [Diagnals with degree and edges with -1] and cofactor gives the number of spanning trees
+
 def hierarchiesCount(n, respectList):
-    respectList = list(set(respectList))
+    MOD = 10**9 + 7
+    if n == 1:
+        return 1
+    A = [[0] * n for _ in range(n)]
+    for i, j in respectList:
+        A[i][i] += 1
+        A[j][j] += 1
+        A[i][j] = A[j][i] = -1
+    return (det(A) * n) % MOD
+
+
+def det(A):
+    N = len(A)
+    for i in range(N-2):
+        for j in range(i+1, N):
+            for k in range(i+1, N):
+                A[j][k] = A[j][k] * A[i][i] - A[j][i] * A[i][k]
+                if i:
+                    A[j][k] /= A[i-1][i-1]
+    return A[-2][-2]
