@@ -6,21 +6,22 @@ from collections import defaultdict
 
 def fn(s, k):
     d = defaultdict(lambda: 0)
-    l = 0
-    c = 0
-    j = 0
-    for i in s:
+    p = q = 0
+    x = y = 0
+    end= defaultdict(lambda: 0)
+    for pos,i in enumerate(s):
         if i in d:
             d[i] += 1
-            c += 1
-        elif len(d)+1 <= k:
-            d[i] += 1
-            c += 1
         else:
-            l = max(l, c)
-            d[j] -= 1
-            c -= 1
-            if d[j] == 0:
-                d.pop(j)
-                j += 1
-    return l
+            if len(d) < k:
+                d[i] = 1
+            else:
+                while d[s[p]]>0:
+                    d[s[p]] -= 1
+                d.pop(s[p])
+                
+        q += 1
+        end[i]=pos
+        if (q-p > y-x):
+            x, y = p, q
+    print(s[x:y])
